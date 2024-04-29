@@ -61,4 +61,4 @@ Other published papers using reactingDNS solver:
 
 [5] Parsa Tamadonfar, Shervin Karimkashi, Ossi Kaario, Ville Vuorinen. A Numerical Study on Premixed Turbulent Planar Ammonia/Air and Ammonia/Hydrogen/Air Flames: An Analysis on Flame Displacement Speed and Burning Velocity. Flow, Turbulence and Combustion, 2023, 1-25, https://doi.org/10.1007/s10494-023-00445-y.
 
-[6] Parsa Tamadonfar, Shervin Karimkashi, Thorsten Zirwes, Ville Vuorinen, Ossi Kaario. A numerical study on premixed laminar ammonia/air flames enriched with hydrogen: An analysis on flame–wall interaction. Combustion and Flame, 2024,265, 113444, https://doi.org/10.1016/j.combustflame.2024.113444.
+[6] Parsa Tamadonfar, Shervin Karimkashi, Thorsten Zirwes, Ville Vuorinen, Ossi Kaario. A numerical study on premixed laminar ammonia/air flames enriched with hydrogen: An analysis on flame–wall interaction. Combustion and Flame, 2024, 265, 113444, https://doi.org/10.1016/j.combustflame.2024.113444.
