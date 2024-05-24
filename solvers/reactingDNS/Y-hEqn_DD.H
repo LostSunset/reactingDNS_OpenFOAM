@@ -77,7 +77,7 @@ DiffError *= 0.;
 			}
 		}
 		
-		vk += Hsi*(rho*Diffi*fvc::grad(Yi)-Yi*rho*Diffi*fvc::grad(MW)/MW+(-rho*Diff[i]*ThermalDiffRatio*fvc::grad(T)*Yi/(T*(Xi+SMALL)))-Yi*DiffError);		
+		vk += Hsi*(rho*Diffi*fvc::grad(Yi)+Yi*rho*Diffi*fvc::grad(MW)/MW+(-rho*Diff[i]*ThermalDiffRatio*fvc::grad(T)*Yi/(T*(Xi+SMALL)))-Yi*DiffError);		
 		diffsh += fvc::laplacian(mixAlpha*Hsi,Yi);// override temperature to enthalpy
 			
 		fvScalarMatrix YEqn
