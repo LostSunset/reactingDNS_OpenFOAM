@@ -55,10 +55,12 @@ Other published papers using reactingDNS solver:
 
 [2] Shervin Karimkashi, Ossi Kaario, Ville Vuorinen. Effects of hydrogen enrichment and turbulence intensity on the combustion mode in locally stratified dual-fuel mixtures of n-dodecane/methane. Applications in Energy and Combustion Science, 2022,  10, 100072. https://doi.org/10.1016/j.jaecs.2022.100072.
 
-[3] Shervin Karimkashi, Parsa Tamadonfar, Ossi Kaario, Ville Vuorinen. A Numerical Investigation on Effects of Hydrogen Enrichment and Turbulence on NO Formation Pathways in Premixed Ammonia/Air Flames. Combustion Science and Technology, 2023,  https://doi.org/10.1080/00102202.2023.2180634.
+[3] Shervin Karimkashi, Parsa Tamadonfar, Ossi Kaario, Ville Vuorinen. A numerical investigation on effects of hydrogen enrichment and turbulence on NO formation pathways in premixed ammonia/air flames. Combustion Science and Technology, 2023,  https://doi.org/10.1080/00102202.2023.2180634.
 
 [4] Parsa Tamadonfar, Shervin Karimkashi, Ossi Kaario, Ville Vuorinen. A study of flame dynamics and structure in premixed turbulent planar NH3/H2/air flames. International Journal of Engine Research, 2023, https://doi.org/10.1177/14680874231170657.
 
 [5] Parsa Tamadonfar, Shervin Karimkashi, Ossi Kaario, Ville Vuorinen. A Numerical Study on Premixed Turbulent Planar Ammonia/Air and Ammonia/Hydrogen/Air Flames: An Analysis on Flame Displacement Speed and Burning Velocity. Flow, Turbulence and Combustion, 2023, 1-25, https://doi.org/10.1007/s10494-023-00445-y.
 
 [6] Parsa Tamadonfar, Shervin Karimkashi, Thorsten Zirwes, Ville Vuorinen, Ossi Kaario. A numerical study on premixed laminar ammonia/air flames enriched with hydrogen: An analysis on flame–wall interaction. Combustion and Flame, 2024, 265, 113444, https://doi.org/10.1016/j.combustflame.2024.113444.
+
+[7] Yuchen Zhou, Shijie Xu, Leilei Xu, Xue-Song Bai. FGM modeling of ammonia/n-heptane combustion under RCCI engine conditions. Proceedings of the Combustion Institute, 2024, 40, 105601, https://doi.org/10.1016/j.proci.2024.105601.
