@@ -5,7 +5,7 @@ tmp<fv::convectionScheme<scalar> > mvConvection
         mesh,
         fields,
         phi,
-        mesh.divScheme("div(phi,Yi_h)")
+        mesh.schemes().div("div(phi,Yi_h)")
     )
 );
 label tmpDebug = solverPerformance::debug; 
@@ -22,18 +22,18 @@ for(label i=0; i < Y.size(); i++)
 			(
 				fvm::ddt(rho, Yi)
 			  + mvConvection->fvmDiv(phi, Yi)
-			  - fvm::laplacian(mixAlpha+turbulence->mut()/Sct, Yi)   //Lewis Number to be unity for all species
+			  - fvm::laplacian(mixAlpha+turbulence->nut()*rho/Sct, Yi)   //Lewis Number to be unity for all species
 			  ==
 				reaction->R(Yi)
-			  + fvOptions(rho, Yi)
+			  + fvModels.source(rho, Yi)
 			);
 			YEqn.relax();
 
-			fvOptions.constrain(YEqn);
+			fvConstraints.constrain(YEqn);
 
 			YEqn.solve("Yi");
 
-			fvOptions.correct(Yi);
+			fvConstraints.constrain(Yi);
 
 			Yi.max(0.0);
 			Yt += Yi;
@@ -61,19 +61,19 @@ fvScalarMatrix EEqn
 		)
 	  : -dpdt
 	)
-  - fvm::laplacian(mixAlpha+turbulence->mut()/Prt, he)
+  - fvm::laplacian(mixAlpha+turbulence->nut()*rho/Prt, he)
  ==
 	reaction->Qdot()
-  + fvOptions(rho, he)
+  + fvModels.source(rho, he)
 );
 
 EEqn.relax();
 
-fvOptions.constrain(EEqn);
+fvConstraints.constrain(EEqn);
 
 EEqn.solve();
 
-fvOptions.correct(he);
+fvConstraints.constrain(he);
 
 
 thermo.correct();

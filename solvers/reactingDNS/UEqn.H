@@ -6,21 +6,21 @@ tmp<fvVectorMatrix> tUEqn
 (
     fvm::ddt(rho, U) + fvm::div(phi, U)
   + MRF.DDt(rho, U)
-  - fvm::laplacian(mixMu+turbulence->mut(),U)
-  - fvc::div(((mixMu+turbulence->mut())*dev2(fvc::grad(U)().T())))
+  - fvm::laplacian(mixMu+turbulence->nut() * rho,U)
+  - fvc::div(((mixMu+turbulence->nut()*rho)*dev2(fvc::grad(U)().T())))
  ==  
-    fvOptions(rho, U)
+    fvModels.source(rho, U)
 );
 fvVectorMatrix& UEqn = tUEqn.ref();
 
 UEqn.relax();
 
-fvOptions.constrain(UEqn);
+fvConstraints.constrain(UEqn);
 
 if (pimple.momentumPredictor())
 {
     solve(UEqn == -fvc::grad(p));
 
-    fvOptions.correct(U);
+    fvConstraints.constrain(U);
     K = 0.5*magSqr(U);
 }

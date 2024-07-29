@@ -2,8 +2,8 @@
 
 Info<< nl << "Reading thermophysicalProperties" << endl;
 
-autoPtr<psiReactionThermo> pThermo(psiReactionThermo::New(mesh));
-psiReactionThermo& thermo = pThermo();
+autoPtr<fluidReactionThermo> pThermo(fluidReactionThermo::New(mesh));
+fluidReactionThermo& thermo = pThermo();
 thermo.validate(args.executable(), "h", "e");
 
 /* autoPtr< BasicChemistryModel<psiReactionThermo>> pChemistry
@@ -14,10 +14,11 @@ thermo.validate(args.executable(), "h", "e");
 basicSpecieMixture& composition = thermo.composition();
 PtrList<volScalarField>& Y = composition.Y();
 
-const word inertSpecie(thermo.lookup("inertSpecie"));
+const dictionary thermoDict(thermo.properties());
+const word inertSpecie(thermoDict.lookup("inertSpecie"));
 if (!composition.species().found(inertSpecie))
 {
-    FatalIOErrorIn(args.executable().c_str(), thermo)
+    FatalIOErrorIn(args.executable().c_str(), thermoDict)
         << "Inert specie " << inertSpecie << " not found in available species "
         << composition.species() << exit(FatalIOError);
 }
@@ -28,7 +29,9 @@ volScalarField rho
     (
         "rho",
         runTime.timeName(),
-        mesh
+        mesh,
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
     ),
     thermo.rho()
 );
@@ -51,9 +54,9 @@ volScalarField& p = thermo.p();
 
 #include "compressibleCreatePhi.H"
 
-pressureControl pressureControl(p, rho, pimple.dict(), false);
+pressureReference pressureReference(p,rho , pimple.dict(), false);
 
-mesh.setFluxRequired(p.name());
+mesh.schemes().setFluxRequired(p.name());
 
 Info << "Creating turbulence model.\n" << nl;
 autoPtr<compressible::momentumTransportModel> turbulence
@@ -69,17 +72,20 @@ autoPtr<compressible::momentumTransportModel> turbulence
 
 
 Info<< "Creating thermophysical transport model\n" << endl;
-autoPtr<psiReactionThermophysicalTransportModel> thermophysicalTransport
+autoPtr<fluidReactionThermophysicalTransportModel>thermophysicalTransport
 (
-    psiReactionThermophysicalTransportModel::New(turbulence(), thermo)
+    fluidReactionThermophysicalTransportModel::New(turbulence(), thermo)
 );
 
 
 Info<< "Creating reaction model\n" << endl;
-autoPtr<CombustionModel<psiReactionThermo>> reaction
+autoPtr<combustionModel> reaction
 (
-    CombustionModel<psiReactionThermo>::New(thermo, turbulence())
+    combustionModel::New(thermo, turbulence())
 );
+
+dimensioned<scalar> unburntRho(dimDensity,1.0);
+
 
 
 Info<< "Creating field dpdt\n" << endl;
@@ -95,9 +101,41 @@ volScalarField dpdt
     dimensionedScalar(p.dimensions()/dimTime, 0)
 );
 
+
+Info << "Creating displacement speed\n" << endl;
+volScalarField displacementSpeed
+(
+    IOobject
+    (
+        "displacementSpeed",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedScalar(dimVelocity, 0)
+);
+
+Info << "Creating field reactionSourceTerm\n" << endl;
+volScalarField reactionSourceTerm
+(
+    IOobject
+    (
+        "reactionSourceTerm",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::NO_WRITE
+    ),
+    mesh,
+    dimensionedScalar(dimMass/dimVolume/dimTime, 0)
+);
+
 Info<< "Creating field kinetic energy K\n" << endl;
 volScalarField K("K", 0.5*magSqr(U));
 
+dimensionedScalar initialMass = fvc::domainIntegrate(rho);
 
 multivariateSurfaceInterpolationScheme<scalar>::fieldTable fields;
 
@@ -107,8 +145,41 @@ forAll(Y, i)
 }
 fields.add(thermo.he());
 
+// for print reaction rates for each species
+bool writeRR = runTime.controlDict().lookupOrDefault<bool>("writeRR",false);
+Info << "writeRR: " << writeRR << endl;
+
+PtrList<volScalarField> RYi(Y.size());
+
+// 
+if (writeRR)
+{
+    forAll(RYi,i)
+    {
+        RYi.set
+        (
+            i,
+            new volScalarField 
+            (
+                IOobject
+                (
+                    "R_" + Y[i].name(),
+                    runTime.timeName(),
+                    mesh,
+                    IOobject::NO_READ,
+                    IOobject::AUTO_WRITE
+                ),
+                mesh,
+                dimensionedScalar(dimless, 0)
+            )
+        );
+    }
+}
+    // RYii.field() = -reaction->R(Y[i])->source();
+
 
 //thermo.correct();
 
 #include "createMRF.H"
-#include "createFvOptions.H"
+#include "createFvModels.H"
+#include "createFvConstraints.H"

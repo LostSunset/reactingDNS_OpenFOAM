@@ -1,7 +1,7 @@
 mixMu *= 0;
 mixLambdaA *= 0 ; // reset the number to zero;
 mixLambdaB *= 0 ;
-//DiffError *= 0 ; 
+DiffError *= 0 ; 
 // get mixture mole mass
 MW *= 0;
 forAll(Y,i)
@@ -14,8 +14,6 @@ forAll(Y,i)
 {
     X[i] = Y[i]*MW/composition.Wi(i);
 }
-
-volScalarField tmpT = log(T/TUnit);
 
 if(differentialDiffusion)
 {
@@ -30,8 +28,7 @@ if(differentialDiffusion)
 					label m = max(groupSpecies[i][0],groupSpecies[j][0]);
 					label n = min(groupSpecies[i][0],groupSpecies[j][0]);	
 					label k = Y.size()*n+m-0.5*n*(n+1);
-					//volScalarField tmpd = 1e-4 * exp(Diff1[k]*pow(log(T/TUnit),0) + Diff2[k]*pow(log(T/TUnit),1) + Diff3[k]*pow(log(T/TUnit),2) + Diff4[k]*pow(log(T/TUnit),3)) / (p / 101325 /pUnit);
-					volScalarField tmpd = 1e-4 * exp(Diff1[k]+tmpT*(Diff2[k]+tmpT*(Diff3[k]+tmpT*Diff4[k]))) / (p / 101325 /pUnit);
+					volScalarField tmpd = 1e-4 * exp(Diff1[k]*pow(log(T/TUnit),0) + Diff2[k]*pow(log(T/TUnit),1) + Diff3[k]*pow(log(T/TUnit),2) + Diff4[k]*pow(log(T/TUnit),3)) / (p / 101325 /pUnit);
 					forAll(groupSpecies[i],h)
 					{
 						forAll(groupSpecies[j],z)
@@ -56,10 +53,8 @@ forAll(groupSpecies,i)
 {
 	if(groupSpecies[i][0] != -1)
 	{
-		//Lambda[groupSpecies[i][0]] = lambdaUnit*1e-5*exp(Lambda1[groupSpecies[i][0]]*pow(log(T/TUnit),0) + Lambda2[groupSpecies[i][0]]*pow(log(T/TUnit),1) + Lambda3[groupSpecies[i][0]]*pow(log(T/TUnit),2) + Lambda4[groupSpecies[i][0]]*pow(log(T/TUnit),3));
-		Lambda[groupSpecies[i][0]] = lambdaUnit*1e-5*exp(Lambda1[groupSpecies[i][0]] + tmpT*(Lambda2[groupSpecies[i][0]]+ tmpT*(Lambda3[groupSpecies[i][0]]+tmpT*Lambda4[groupSpecies[i][0]])));
-		//Mu[groupSpecies[i][0]] = 0.1*MuUnit*exp(Mu1[groupSpecies[i][0]]*pow(log(T/TUnit),0) + Mu2[groupSpecies[i][0]]*pow(log(T/TUnit),1) + Mu3[groupSpecies[i][0]]*pow(log(T/TUnit),2) + Mu4[groupSpecies[i][0]]*pow(log(T/TUnit),3));
-		Mu[groupSpecies[i][0]] = 0.1*MuUnit*exp(Mu1[groupSpecies[i][0]] + tmpT*(Mu2[groupSpecies[i][0]]+tmpT*(Mu3[groupSpecies[i][0]]+tmpT*Mu4[groupSpecies[i][0]])));		
+		Lambda[groupSpecies[i][0]] = lambdaUnit*1e-5*exp(Lambda1[groupSpecies[i][0]]*pow(log(T/TUnit),0) + Lambda2[groupSpecies[i][0]]*pow(log(T/TUnit),1) + Lambda3[groupSpecies[i][0]]*pow(log(T/TUnit),2) + Lambda4[groupSpecies[i][0]]*pow(log(T/TUnit),3));	
+		Mu[groupSpecies[i][0]] = 0.1*MuUnit*exp(Mu1[groupSpecies[i][0]]*pow(log(T/TUnit),0) + Mu2[groupSpecies[i][0]]*pow(log(T/TUnit),1) + Mu3[groupSpecies[i][0]]*pow(log(T/TUnit),2) + Mu4[groupSpecies[i][0]]*pow(log(T/TUnit),3));		
 		forAll(groupSpecies[i],j)
 		{
 			if(j > 0)
@@ -125,7 +120,6 @@ if(thermalDiffusion)
 {
 	TDRatio_H *= 0;
 	TDRatio_H2 *= 0;
-	volScalarField tmpTT = T/TUnit;
 	forAll(Y,i)
 	{
 		if(Y[i].name() == "H")
@@ -134,8 +128,7 @@ if(thermalDiffusion)
 			{
 				if(j != i)
 				{
-					//TDRatio_H += X[i]*X[j]*(TDiff1[j]*pow(T/TUnit,0) + TDiff2[j]*pow(T/TUnit,1) + TDiff3[j]*pow(T/TUnit,2) + TDiff4[j]*pow(T/TUnit,3));
-					TDRatio_H += X[i]*X[j]*(TDiff1[j] + tmpTT*(TDiff2[j]+ tmpTT*(TDiff3[j]+tmpTT*TDiff4[j])));
+					TDRatio_H += X[i]*X[j]*(TDiff1[j]*pow(T/TUnit,0) + TDiff2[j]*pow(T/TUnit,1) + TDiff3[j]*pow(T/TUnit,2) + TDiff4[j]*pow(T/TUnit,3));
 				}
 			}		
 			//DiffError += 	rho*Diff[i]*TDRatio_H*Y[i]*fvc::grad(T)/(T*(X[i]+SMALL));	
@@ -147,8 +140,7 @@ if(thermalDiffusion)
 			{
 				if(j != i)
 				{
-					//TDRatio_H2 += X[i]*X[j]*(TDiff1[j+Y.size()]*pow(T/TUnit,0) + TDiff2[j+Y.size()]*pow(T/TUnit,1) + TDiff3[j+Y.size()]*pow(T/TUnit,2) + TDiff4[j+Y.size()]*pow(T/TUnit,3));
-					TDRatio_H += X[i]*X[j]*(TDiff1[j+Y.size()] + tmpTT*(TDiff2[j+Y.size()]+ tmpTT*(TDiff3[j+Y.size()]+tmpTT*TDiff4[j+Y.size()])));
+					TDRatio_H2 += X[i]*X[j]*(TDiff1[j+Y.size()]*pow(T/TUnit,0) + TDiff2[j+Y.size()]*pow(T/TUnit,1) + TDiff3[j+Y.size()]*pow(T/TUnit,2) + TDiff4[j+Y.size()]*pow(T/TUnit,3));
 				}
 			}
 			//DiffError += 	rho*Diff[i]*TDRatio_H2*Y[i]*fvc::grad(T)/(T*(X[i]+SMALL));				

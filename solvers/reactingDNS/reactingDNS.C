@@ -41,14 +41,16 @@ Description
 	
 \*---------------------------------------------------------------------------*/
 #include "fvCFD.H"
-#include "fluidThermoMomentumTransportModel.H"
-#include "psiReactionThermophysicalTransportModel.H"
-#include "psiReactionThermo.H"
-#include "CombustionModel.H"
+#include "fluidReactionThermo.H"
+#include "combustionModel.H"
+#include "compressibleMomentumTransportModels.H"
+#include "fluidReactionThermophysicalTransportModel.H"
 #include "multivariateScheme.H"
 #include "pimpleControl.H"
-#include "pressureControl.H"
-#include "fvOptions.H"
+#include "pressureReference.H"
+#include "CorrectPhi.H"
+#include "fvModels.H"
+#include "fvConstraints.H"
 #include "localEulerDdtScheme.H"
 #include "fvcSmooth.H"
 
@@ -98,6 +100,7 @@ int main(int argc, char *argv[])
 	#include "createTDiffFields.H"
 	#include "createLambdaFields.H"
 	#include "createMuFields.H"
+    #include "createRhoUfIfPresent.H"
 
     turbulence->validate();
 
@@ -111,7 +114,8 @@ int main(int argc, char *argv[])
 
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-	Info<< "\nStarting time loop\n" << endl;
+	Info << "\n Running reactingDNS in OpenFOAM-10\n" << endl;
+    Info<< "\nStarting time loop\n" << endl;
 	label nStep = 0;
 
     #include "readTranData.H"
@@ -172,7 +176,21 @@ int main(int argc, char *argv[])
             }
         }
 
+
+
+
 		rho = thermo.rho();
+        
+        // print reaction rates for each species
+        if (writeRR)
+        {
+            forAll(RYi,i)
+            {
+                RYi[i].field() = -reaction->R(Y[i])->source()/mesh.V();
+            }
+        }
+
+
 
         runTime.write();
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"

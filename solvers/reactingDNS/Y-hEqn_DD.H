@@ -5,11 +5,11 @@ tmp<fv::convectionScheme<scalar> > mvConvection
         mesh,
         fields,
         phi,
-        mesh.divScheme("div(phi,Yi_h)")
+        mesh.schemes().div("div(phi,Yi_h)")
     )
 );
 label tmpDebug = solverPerformance::debug; 
-solverPerformance::debug = 0; 
+//solverPerformance::debug = 0; 
 vk *= 0;
 diffsh *= 0;
 DiffError *= 0;
@@ -90,21 +90,21 @@ for(label i=0; i < Y.size(); i++)
 		(
 			fvm::ddt(rho, Yi)
 		  + mvConvection->fvmDiv(phi, Yi)
-		  - fvm::laplacian(rho*Diffi+turbulence->mut()/Sct, Yi)   //fvm::laplacian(rho*(Diffi+Lei*mixAlpha/rho), Yi)
+		  - fvm::laplacian(rho*Diffi+turbulence->nut()*rho/Sct, Yi)   //fvm::laplacian(rho*(Diffi+Lei*mixAlpha/rho), Yi)
 		  + mvConvection->fvmDiv(phiUc,Yi)     		  
 		  - fvc::laplacian(rho*Diffi*Yi/MW,MW)
 		  - fvc::laplacian(-rho*Diffi*ThermalDiffRatio*Yi/(T*(Xi+SMALL)),T) // soret effect  Yi/(T*(Xi+SMALL)),T)
 		  ==
 			reaction->R(Yi)
-		  + fvOptions(rho, Yi)
+		  + fvModels.source(rho, Yi)
 		);
 		YEqn.relax();
 
-		fvOptions.constrain(YEqn);
+		fvConstraints.constrain(YEqn);
 
 		YEqn.solve("Yi");
 
-		fvOptions.correct(Yi);
+		fvConstraints.constrain(Yi);
 
 		Yi.max(0.0);
 		Yt += Yi;	
@@ -113,7 +113,7 @@ for(label i=0; i < Y.size(); i++)
 // for N2
 {
 	label i = inertIndex;
-	//volScalarField& Yi = Y[i];
+	volScalarField& Yi = Y[i];
 	for(label icell = 0; icell < rho.size(); icell++)
 	{
 		Hsi[icell] = composition.Hs(i, p[icell], T[icell]);
@@ -160,21 +160,21 @@ fvScalarMatrix EEqn
 		)
 	  : -dpdt
 	)
-  - fvm::laplacian(mixAlpha+turbulence->mut()/Prt, he)
+  - fvm::laplacian(mixAlpha+turbulence->nut()*rho/Prt, he)
   + diffsh
   - fvc::div(vk)
  ==
 	reaction->Qdot()
-  + fvOptions(rho, he)
+  + fvModels.source(rho, he)
 );
 
 EEqn.relax();
 
-fvOptions.constrain(EEqn);
+fvConstraints.constrain(EEqn);
 
 EEqn.solve("he");
 
-fvOptions.correct(he);
+fvConstraints.constrain(he);
 
 thermo.correct();
 
