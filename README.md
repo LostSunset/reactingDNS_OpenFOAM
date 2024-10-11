@@ -64,3 +64,5 @@ Other published papers using reactingDNS solver:
 [6] Parsa Tamadonfar, Shervin Karimkashi, Thorsten Zirwes, Ville Vuorinen, Ossi Kaario. A numerical study on premixed laminar ammonia/air flames enriched with hydrogen: An analysis on flame–wall interaction. Combustion and Flame, 2024, 265, 113444, https://doi.org/10.1016/j.combustflame.2024.113444.
 
 [7] Yuchen Zhou, Shijie Xu, Leilei Xu, Xue-Song Bai. FGM modeling of ammonia/n-heptane combustion under RCCI engine conditions. Proceedings of the Combustion Institute, 2024, 40, 105601, https://doi.org/10.1016/j.proci.2024.105601.
+
+[8] Yangyang Ban, Fan Zhang, Naiyuan Zhang, Shenghui Zhong, Jiajian Zhu, Yiqiang Pei. The improved performance of plasma assisted combustion (PAC) simulations using the fully analytical Jacobian. Combustion and Flame, 2024, 270, 113788, https://doi.org/10.1016/j.combustflame.2024.113788. 
