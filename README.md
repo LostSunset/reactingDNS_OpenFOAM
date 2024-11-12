@@ -66,3 +66,5 @@ Other published papers using reactingDNS solver:
 [7] Yuchen Zhou, Shijie Xu, Leilei Xu, Xue-Song Bai. FGM modeling of ammonia/n-heptane combustion under RCCI engine conditions. Proceedings of the Combustion Institute, 2024, 40, 105601, https://doi.org/10.1016/j.proci.2024.105601.
 
 [8] Yangyang Ban, Fan Zhang, Naiyuan Zhang, Shenghui Zhong, Jiajian Zhu, Yiqiang Pei. The improved performance of plasma assisted combustion (PAC) simulations using the fully analytical Jacobian. Combustion and Flame, 2024, 270, 113788, https://doi.org/10.1016/j.combustflame.2024.113788. 
+
+[9] Mohammad Shahsavari, Nilanjan Chakrabort, Shenghui Zhong, Agustin Valera-Medina, Mehdi Jangi. Comparative effects of plasma and preheating in assisting premixed ammonia/air flames: A DNS study. Fuel, 2025, 318, 133645, https://doi.org/10.1016/j.fuel.2024.133645.
