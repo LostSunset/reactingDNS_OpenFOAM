@@ -68,3 +68,5 @@ Other published papers using reactingDNS solver:
 [8] Yangyang Ban, Fan Zhang, Naiyuan Zhang, Shenghui Zhong, Jiajian Zhu, Yiqiang Pei. The improved performance of plasma assisted combustion (PAC) simulations using the fully analytical Jacobian. Combustion and Flame, 2024, 270, 113788, https://doi.org/10.1016/j.combustflame.2024.113788. 
 
 [9] Mohammad Shahsavari, Nilanjan Chakrabort, Shenghui Zhong, Agustin Valera-Medina, Mehdi Jangi. Comparative effects of plasma and preheating in assisting premixed ammonia/air flames: A DNS study. Fuel, 2025, 318, 133645, https://doi.org/10.1016/j.fuel.2024.133645.
+
+[10] Amin Bekhradinasab, Shidvash Vakilipour, Jafar Al-Zaili. Influence of swirl number and air preheating on turbulent mixing in hydrogen–methane blends within a swirl-stabilized burner. International Journal of Heat and Mass Transfer, 2025, 239, 126475, https://doi.org/10.1016/j.ijheatmasstransfer.2024.126475.
