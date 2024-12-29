@@ -148,7 +148,7 @@ if(thermalDiffusion)
 				if(j != i)
 				{
 					//TDRatio_H2 += X[i]*X[j]*(TDiff1[j+Y.size()]*pow(T/TUnit,0) + TDiff2[j+Y.size()]*pow(T/TUnit,1) + TDiff3[j+Y.size()]*pow(T/TUnit,2) + TDiff4[j+Y.size()]*pow(T/TUnit,3));
-					TDRatio_H += X[i]*X[j]*(TDiff1[j+Y.size()] + tmpTT*(TDiff2[j+Y.size()]+ tmpTT*(TDiff3[j+Y.size()]+tmpTT*TDiff4[j+Y.size()])));
+					TDRatio_H2 += X[i]*X[j]*(TDiff1[j+Y.size()] + tmpTT*(TDiff2[j+Y.size()]+ tmpTT*(TDiff3[j+Y.size()]+tmpTT*TDiff4[j+Y.size()])));
 				}
 			}
 			//DiffError += 	rho*Diff[i]*TDRatio_H2*Y[i]*fvc::grad(T)/(T*(X[i]+SMALL));				
