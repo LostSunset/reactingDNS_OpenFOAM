@@ -70,3 +70,5 @@ Other published papers using reactingDNS solver:
 [9] Mohammad Shahsavari, Nilanjan Chakrabort, Shenghui Zhong, Agustin Valera-Medina, Mehdi Jangi. Comparative effects of plasma and preheating in assisting premixed ammonia/air flames: A DNS study. Fuel, 2025, 318, 133645, https://doi.org/10.1016/j.fuel.2024.133645.
 
 [10] Amin Bekhradinasab, Shidvash Vakilipour, Jafar Al-Zaili. Influence of swirl number and air preheating on turbulent mixing in hydrogen–methane blends within a swirl-stabilized burner. International Journal of Heat and Mass Transfer, 2025, 239, 126475, https://doi.org/10.1016/j.ijheatmasstransfer.2024.126475.
+
+[11] Fan Zhang, Yangyang Ban, Shenghui Zhong, Zhenwei Li, Yiqiang Pei. Characteristics of inter-pulse coupling regimes during nanosecond pulse discharge with elevated single-pulse energy in flowing mixtures. Physics of Fluids, 2025, 37, 013619, https://doi.org/10.1063/5.0250530.
